@@ -1,0 +1,1290 @@
+html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planner TDAH - Seu Aliado Neurodivergente</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #6C63FF;
+            --secondary: #FF6584;
+            --accent: #36D1DC;
+            --light: #F5F7FA;
+            --dark: #2D3748;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+            --text: #333333;
+            --text-light: #666666;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --radius-small: 8px;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: var(--text);
+            line-height: 1.6;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 20px;
+            border-radius: 0 0 var(--radius) var(--radius);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .user-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .date-display {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .date-display i {
+            margin-right: 8px;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 110px;
+            z-index: 90;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: var(--radius-small);
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-title h2 {
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+        
+        .add-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+        
+        .add-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Cards */
+        .task-card, .medication-card, .cycle-card, .study-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .task-card:hover, .medication-card:hover, .cycle-card:hover, .study-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .task-card.urgent {
+            border-left-color: var(--danger);
+        }
+        
+        .task-card.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .study-card {
+            border-left-color: var(--accent);
+        }
+        
+        .medication-card {
+            border-left-color: var(--success);
+        }
+        
+        .cycle-card {
+            border-left-color: var(--secondary);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+        
+        .card-time {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            background-color: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        
+        .card-details {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background-color: #eef2ff;
+            color: var(--primary);
+        }
+        
+        .alarm-icon {
+            color: var(--warning);
+            font-size: 1.2rem;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Form Styles */
+        .form-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .form-header h3 {
+            font-size: 1.3rem;
+        }
+        
+        .close-form {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .form-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-small);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-group input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .form-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-small);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: var(--text);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        /* AI Suggestion */
+        .ai-suggestion {
+            background: linear-gradient(135deg, #f5f7fa, #e4e8f0);
+            border-radius: var(--radius);
+            padding: 15px;
+            margin-top: 25px;
+            border-left: 5px solid var(--accent);
+        }
+        
+        .ai-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .ai-header i {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+        
+        .ai-header h4 {
+            color: var(--dark);
+        }
+        
+        .ai-text {
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+        
+        /* Footer */
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+        }
+        
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+            transition: all 0.3s;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header {
+                border-radius: 0;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        /* Completion Checkbox */
+        .completion-checkbox {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .completion-checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .completion-checkbox.completed:after {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+        }
+        
+        .task-card.completed {
+            opacity: 0.7;
+        }
+        
+        .task-card.completed .card-title {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>Planner TDAH</span>
+                </div>
+                <div class="user-profile">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            <div class="date-display">
+                <i class="far fa-calendar-alt"></i>
+                <span id="current-date">Quinta-feira, 15 de Junho de 2023</span>
+            </div>
+        </header>
+        
+        <!-- Navigation -->
+        <nav>
+            <div class="nav-item active" data-tab="tasks">
+                <i class="fas fa-tasks"></i>
+                <span>Tarefas</span>
+            </div>
+            <div class="nav-item" data-tab="study">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Estudos</span>
+            </div>
+            <div class="nav-item" data-tab="cycle">
+                <i class="fas fa-heartbeat"></i>
+                <span>Ciclo</span>
+            </div>
+            <div class="nav-item" data-tab="medication">
+                <i class="fas fa-pills"></i>
+                <span>Medicação</span>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Tarefas Tab -->
+            <div id="tasks" class="tab-content active">
+                <div class="section-title">
+                    <h2>Suas Tarefas Hoje</h2>
+                    <button class="add-btn" id="add-task-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div id="tasks-list">
+                    <!-- Tarefas serão inseridas aqui via JavaScript -->
+                    <div class="task-card">
+                        <div class="card-header">
+                            <div class="card-title">Consulta com psicóloga</div>
+                            <div class="card-time">15:30</div>
+                        </div>
+                        <div class="card-details">
+                            Levar relatório do mês e questionário preenchido.
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-tag">Saúde</div>
+                            <div>
+                                <i class="fas fa-bell alarm-icon"></i>
+                                <span style="margin-left: 5px; font-size: 0.9rem;">30min antes</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card urgent">
+                        <div class="card-header">
+                            <div class="card-title">Pagar conta de luz</div>
+                            <div class="card-time">Vence hoje</div>
+                        </div>
+                        <div class="card-details">
+                            Valor: R$ 128,90. Pagar pelo app do banco.
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-tag">Finanças</div>
+                            <div>
+                                <i class="fas fa-bell alarm-icon"></i>
+                                <span style="margin-left: 5px; font-size: 0.9rem;">1 dia antes</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card warning">
+                        <div class="card-header">
+                            <div class="card-title">Comprar mantimentos</div>
+                            <div class="card-time">18:00</div>
+                        </div>
+                        <div class="card-details">
+                            Levar lista de compras no celular.
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-tag">Casa</div>
+                            <div>
+                                <i class="fas fa-bell alarm-icon"></i>
+                                <span style="margin-left: 5px; font-size: 0.9rem;">1h antes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sugestão da IA -->
+                <div class="ai-suggestion">
+                    <div class="ai-header">
+                        <i class="fas fa-robot"></i>
+                        <h4>Sugestão do Assistente IA</h4>
+                    </div>
+                    <div class="ai-text">
+                        Percebi que você costuma esquecer de pagar contas no prazo. Que tal eu definir lembretes automáticos para todas as suas contas fixas?
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Estudos Tab -->
+            <div id="study" class="tab-content">
+                <div class="section-title">
+                    <h2>Tarefas de Estudo</h2>
+                    <button class="add-btn" id="add-study-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div id="study-list">
+                    <div class="study-card">
+                        <div class="card-header">
+                            <div class="card-title">Entregar trabalho de Psicologia</div>
+                            <div class="card-time">25/06 • 23:59</div>
+                        </div>
+                        <div class="card-details">
+                            <strong>Curso:</strong> Psicologia Clínica<br>
+                            <strong>Instituição:</strong> Universidade Virtual<br>
+                            <strong>Atividade:</strong> Análise de caso - TDAH em adultos
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-tag">Urgente</div>
+                            <div>
+                                <i class="fas fa-bell alarm-icon"></i>
+                                <span style="margin-left: 5px; font-size: 0.9rem;">2 dias antes</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="study-card">
+                        <div class="card-header">
+                            <div class="card-title">Prova de Neurociência</div>
+                            <div class="card-time">30/06 • 14:00</div>
+                        </div>
+                        <div class="card-details">
+                            <strong>Curso:</strong> Psicologia Clínica<br>
+                            <strong>Instituição:</strong> Universidade Virtual<br>
+                            <strong>Conteúdo:</strong> Capítulos 5 a 8
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-tag">Estudo</div>
+                            <div>
+                                <i class="fas fa-bell alarm-icon"></i>
+                                <span style="margin-left: 5px; font-size: 0.9rem;">1 semana antes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="empty-state" id="empty-study" style="display: none;">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Nenhuma tarefa de estudo</h3>
+                    <p>Adicione suas atividades acadêmicas para receber lembretes.</p>
+                </div>
+            </div>
+            
+            <!-- Ciclo Menstrual Tab -->
+            <div id="cycle" class="tab-content">
+                <div class="section-title">
+                    <h2>Acompanhamento do Ciclo</h2>
+                    <button class="add-btn" id="add-cycle-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div class="cycle-card">
+                    <div class="card-header">
+                        <div class="card-title">Próximo ciclo esperado</div>
+                        <div class="card-time">Em 5 dias</div>
+                    </div>
+                    <div class="card-details">
+                        <strong>Fase atual:</strong> Folicular<br>
+                        <strong>Próxima fase:</strong> Período menstrual<br>
+                        <strong>Sintomas registrados:</strong> Nenhum no momento
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-tag" style="background-color: #ffeef0; color: #ff6584;">Atenção</div>
+                        <div>
+                            <i class="fas fa-bell alarm-icon"></i>
+                            <span style="margin-left: 5px; font-size: 0.9rem;">3 dias antes</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sugestão da IA -->
+                <div class="ai-suggestion">
+                    <div class="ai-header">
+                        <i class="fas fa-robot"></i>
+                        <h4>Recomendação do Assistente IA</h4>
+                    </div>
+                    <div class="ai-text">
+                        Baseado no seu histórico, sua próxima menstruação deve começar em 5 dias. Recomendo planejar tarefas mais leves nesse período.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Medicação Tab -->
+            <div id="medication" class="tab-content">
+                <div class="section-title">
+                    <h2>Controle de Medicação</h2>
+                    <button class="add-btn" id="add-medication-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div id="medication-list">
+                    <div class="medication-card">
+                        <div class="card-header">
+                            <div class="card-title">Ritalina</div>
+                            <div class="card-time">08:00 • 14:00</div>
+                        </div>
+                        <div class="card-details">
+                            <strong>Dosagem:</strong> 10mg<br>
+                            <strong>Finalidade:</strong> Tratamento de TDAH<br>
+                            <strong>Observações:</strong> Tomar com alimento
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-tag" style="background-color: #f0f9ff; color: #36a1dc;">Diário</div>
+                            <div>
+                                <i class="fas fa-bell alarm-icon"></i>
+                                <span style="margin-left: 5px; font-size: 0.9rem;">15min antes</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="medication-card">
+                        <div class="card-header">
+                            <div class="card-title">Vitamina D</div>
+                            <div class="card-time">12:00</div>
+                        </div>
+                        <div class="card-details">
+                            <strong>Dosagem:</strong> 2000 UI<br>
+                            <strong>Finalidade:</strong> Suplementação<br>
+                            <strong>Observações:</strong> Tomar após o almoço
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-tag" style="background-color: #f0f9ff; color: #36a1dc;">Diário</div>
+                            <div>
+                                <i class="fas fa-bell alarm-icon"></i>
+                                <span style="margin-left: 5px; font-size: 0.9rem;">5min antes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Action Button -->
+        <div class="floating-action">
+            <button class="fab" id="quick-add-btn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        
+        <!-- Form Overlays -->
+        <!-- Formulário para adicionar tarefa -->
+        <div class="form-overlay" id="task-form">
+            <div class="form-container">
+                <div class="form-header">
+                    <h3>Nova Tarefa</h3>
+                    <button class="close-form" id="close-task-form">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="form-body">
+                    <div class="form-group">
+                        <label for="task-title">Título da Tarefa</label>
+                        <input type="text" id="task-title" class="form-control" placeholder="Ex: Pagar conta de luz">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-details">Detalhes</label>
+                        <textarea id="task-details" class="form-control" rows="3" placeholder="Adicione detalhes importantes..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-date">Data</label>
+                            <input type="date" id="task-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-time">Hora</label>
+                            <input type="time" id="task-time" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-category">Categoria</label>
+                            <select id="task-category" class="form-control">
+                                <option value="general">Geral</option>
+                                <option value="health">Saúde</option>
+                                <option value="finance">Finanças</option>
+                                <option value="home">Casa</option>
+                                <option value="work">Trabalho</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-alarm">Lembrete</label>
+                            <select id="task-alarm" class="form-control">
+                                <option value="none">Sem lembrete</option>
+                                <option value="5min">5 minutos antes</option>
+                                <option value="15min">15 minutos antes</option>
+                                <option value="30min" selected>30 minutos antes</option>
+                                <option value="1h">1 hora antes</option>
+                                <option value="1day">1 dia antes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-footer">
+                    <button class="btn btn-secondary" id="cancel-task">Cancelar</button>
+                    <button class="btn btn-primary" id="save-task">Salvar Tarefa</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Formulário para adicionar estudo -->
+        <div class="form-overlay" id="study-form">
+            <div class="form-container">
+                <div class="form-header">
+                    <h3>Nova Tarefa de Estudo</h3>
+                    <button class="close-form" id="close-study-form">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="form-body">
+                    <div class="form-group">
+                        <label for="study-title">Título da Atividade</label>
+                        <input type="text" id="study-title" class="form-control" placeholder="Ex: Entregar trabalho final">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="study-course">Curso</label>
+                            <input type="text" id="study-course" class="form-control" placeholder="Nome do curso">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-institution">Instituição</label>
+                            <input type="text" id="study-institution" class="form-control" placeholder="Nome da instituição">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="study-details">Detalhes da Atividade</label>
+                        <textarea id="study-details" class="form-control" rows="3" placeholder="Descrição da atividade, requisitos, etc..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="study-duedate">Data de Entrega</label>
+                            <input type="date" id="study-duedate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-duetime">Hora Limite</label>
+                            <input type="time" id="study-duetime" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="study-alarm">Lembrete com Antecedência</label>
+                        <select id="study-alarm" class="form-control">
+                            <option value="1day">1 dia antes</option>
+                            <option value="2days" selected>2 dias antes</option>
+                            <option value="3days">3 dias antes</option>
+                            <option value="1week">1 semana antes</option>
+                            <option value="2weeks">2 semanas antes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-footer">
+                    <button class="btn btn-secondary" id="cancel-study">Cancelar</button>
+                    <button class="btn btn-primary" id="save-study">Salvar Atividade</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos da interface
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const currentDateElement = document.getElementById('current-date');
+        
+        // Form overlays
+        const taskForm = document.getElementById('task-form');
+        const studyForm = document.getElementById('study-form');
+        
+        // Botões para abrir formulários
+        const addTaskBtn = document.getElementById('add-task-btn');
+        const addStudyBtn = document.getElementById('add-study-btn');
+        const addCycleBtn = document.getElementById('add-cycle-btn');
+        const addMedicationBtn = document.getElementById('add-medication-btn');
+        const quickAddBtn = document.getElementById('quick-add-btn');
+        
+        // Botões para fechar formulários
+        const closeTaskForm = document.getElementById('close-task-form');
+        const closeStudyForm = document.getElementById('close-study-form');
+        const cancelTask = document.getElementById('cancel-task');
+        const cancelStudy = document.getElementById('cancel-study');
+        
+        // Botões para salvar
+        const saveTask = document.getElementById('save-task');
+        const saveStudy = document.getElementById('save-study');
+        
+        // Data atual
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        currentDateElement.textContent = now.toLocaleDateString('pt-BR', options);
+        
+        // Navegação entre abas
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const tabId = item.getAttribute('data-tab');
+                
+                // Atualiza navegação
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Atualiza conteúdo
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Abrir formulários
+        addTaskBtn.addEventListener('click', () => {
+            taskForm.style.display = 'flex';
+        });
+        
+        addStudyBtn.addEventListener('click', () => {
+            studyForm.style.display = 'flex';
+        });
+        
+        addCycleBtn.addEventListener('click', () => {
+            alert('Funcionalidade de ciclo menstrual em desenvolvimento!');
+        });
+        
+        addMedicationBtn.addEventListener('click', () => {
+            alert('Funcionalidade de medicação em desenvolvimento!');
+        });
+        
+        quickAddBtn.addEventListener('click', () => {
+            // Abre o formulário baseado na aba atual
+            const activeTab = document.querySelector('.nav-item.active').getAttribute('data-tab');
+            
+            if (activeTab === 'tasks') {
+                taskForm.style.display = 'flex';
+            } else if (activeTab === 'study') {
+                studyForm.style.display = 'flex';
+            } else if (activeTab === 'cycle') {
+                alert('Funcionalidade de ciclo menstrual em desenvolvimento!');
+            } else if (activeTab === 'medication') {
+                alert('Funcionalidade de medicação em desenvolvimento!');
+            }
+        });
+        
+        // Fechar formulários
+        closeTaskForm.addEventListener('click', () => {
+            taskForm.style.display = 'none';
+        });
+        
+        closeStudyForm.addEventListener('click', () => {
+            studyForm.style.display = 'none';
+        });
+        
+        cancelTask.addEventListener('click', () => {
+            taskForm.style.display = 'none';
+        });
+        
+        cancelStudy.addEventListener('click', () => {
+            studyForm.style.display = 'none';
+        });
+        
+        // Salvar tarefa
+        saveTask.addEventListener('click', () => {
+            const title = document.getElementById('task-title').value;
+            const details = document.getElementById('task-details').value;
+            const date = document.getElementById('task-date').value;
+            const time = document.getElementById('task-time').value;
+            const category = document.getElementById('task-category').value;
+            const alarm = document.getElementById('task-alarm').value;
+            
+            if (!title) {
+                alert('Por favor, preencha o título da tarefa.');
+                return;
+            }
+            
+            // Criar nova tarefa
+            const tasksList = document.getElementById('tasks-list');
+            const newTask = document.createElement('div');
+            newTask.className = 'task-card';
+            
+            // Determinar categoria para cor da borda
+            let borderClass = '';
+            if (category === 'finance') borderClass = 'urgent';
+            else if (category === 'health') borderClass = 'warning';
+            
+            if (borderClass) newTask.classList.add(borderClass);
+            
+            // Formatar hora
+            let displayTime = time;
+            if (!time && date) {
+                displayTime = 'Dia todo';
+            } else if (time && date) {
+                const timeParts = time.split(':');
+                displayTime = `${timeParts[0]}:${timeParts[1]}`;
+            }
+            
+            // Formatar data
+            let displayDate = 'Hoje';
+            if (date) {
+                const taskDate = new Date(date);
+                const today = new Date();
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                if (taskDate.toDateString() === today.toDateString()) {
+                    displayDate = 'Hoje';
+                } else if (taskDate.toDateString() === tomorrow.toDateString()) {
+                    displayDate = 'Amanhã';
+                } else {
+                    displayDate = taskDate.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+                }
+            }
+            
+            newTask.innerHTML = `
+                <div class="card-header">
+                    <div class="card-title">${title}</div>
+                    <div class="card-time">${displayDate} ${time ? '• ' + displayTime : ''}</div>
+                </div>
+                <div class="card-details">
+                    ${details || 'Sem detalhes adicionais.'}
+                </div>
+                <div class="card-footer">
+                    <div class="card-tag">${getCategoryName(category)}</div>
+                    <div>
+                        <i class="fas fa-bell alarm-icon"></i>
+                        <span style="margin-left: 5px; font-size: 0.9rem;">${getAlarmText(alarm)}</span>
+                    </div>
+                </div>
+            `;
+            
+            // Adicionar à lista
+            tasksList.prepend(newTask);
+            
+            // Fechar formulário e resetar
+            taskForm.style.display = 'none';
+            document.getElementById('task-title').value = '';
+            document.getElementById('task-details').value = '';
+            document.getElementById('task-date').value = '';
+            document.getElementById('task-time').value = '';
+            
+            // Mostrar mensagem de confirmação
+            showNotification('Tarefa adicionada com sucesso!');
+        });
+        
+        // Salvar estudo
+        saveStudy.addEventListener('click', () => {
+            const title = document.getElementById('study-title').value;
+            const course = document.getElementById('study-course').value;
+            const institution = document.getElementById('study-institution').value;
+            const details = document.getElementById('study-details').value;
+            const duedate = document.getElementById('study-duedate').value;
+            const duetime = document.getElementById('study-duetime').value;
+            const alarm = document.getElementById('study-alarm').value;
+            
+            if (!title) {
+                alert('Por favor, preencha o título da atividade.');
+                return;
+            }
+            
+            // Criar novo estudo
+            const studyList = document.getElementById('study-list');
+            const emptyStudy = document.getElementById('empty-study');
+            const newStudy = document.createElement('div');
+            newStudy.className = 'study-card';
+            
+            // Formatar data de entrega
+            let displayDate = 'Data não definida';
+            if (duedate) {
+                const due = new Date(duedate);
+                displayDate = due.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+                if (duetime) {
+                    const timeParts = duetime.split(':');
+                    displayDate += ` • ${timeParts[0]}:${timeParts[1]}`;
+                }
+            }
+            
+            newStudy.innerHTML = `
+                <div class="card-header">
+                    <div class="card-title">${title}</div>
+                    <div class="card-time">${displayDate}</div>
+                </div>
+                <div class="card-details">
+                    <strong>Curso:</strong> ${course || 'Não informado'}<br>
+                    <strong>Instituição:</strong> ${institution || 'Não informada'}<br>
+                    <strong>Atividade:</strong> ${details || 'Sem detalhes adicionais.'}
+                </div>
+                <div class="card-footer">
+                    <div class="card-tag">${duedate ? isUrgent(duedate) ? 'Urgente' : 'Estudo' : 'Pendente'}</div>
+                    <div>
+                        <i class="fas fa-bell alarm-icon"></i>
+                        <span style="margin-left: 5px; font-size: 0.9rem;">${getStudyAlarmText(alarm)}</span>
+                    </div>
+                </div>
+            `;
+            
+            // Adicionar à lista
+            studyList.prepend(newStudy);
+            
+            // Esconder mensagem de lista vazia se existir
+            if (emptyStudy.style.display === 'block') {
+                emptyStudy.style.display = 'none';
+            }
+            
+            // Fechar formulário e resetar
+            studyForm.style.display = 'none';
+            document.getElementById('study-title').value = '';
+            document.getElementById('study-course').value = '';
+            document.getElementById('study-institution').value = '';
+            document.getElementById('study-details').value = '';
+            document.getElementById('study-duedate').value = '';
+            document.getElementById('study-duetime').value = '';
+            
+            // Mostrar mensagem de confirmação
+            showNotification('Atividade de estudo adicionada!');
+        });
+        
+        // Funções auxiliares
+        function getCategoryName(category) {
+            const categories = {
+                'general': 'Geral',
+                'health': 'Saúde',
+                'finance': 'Finanças',
+                'home': 'Casa',
+                'work': 'Trabalho'
+            };
+            return categories[category] || 'Geral';
+        }
+        
+        function getAlarmText(alarm) {
+            const alarms = {
+                'none': 'Sem lembrete',
+                '5min': '5min antes',
+                '15min': '15min antes',
+                '30min': '30min antes',
+                '1h': '1h antes',
+                '1day': '1 dia antes'
+            };
+            return alarms[alarm] || 'Sem lembrete';
+        }
+        
+        function getStudyAlarmText(alarm) {
+            const alarms = {
+                '1day': '1 dia antes',
+                '2days': '2 dias antes',
+                '3days': '3 dias antes',
+                '1week': '1 semana antes',
+                '2weeks': '2 semanas antes'
+            };
+            return alarms[alarm] || '2 dias antes';
+        }
+        
+        function isUrgent(dateString) {
+            const dueDate = new Date(dateString);
+            const today = new Date();
+            const diffTime = dueDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 3;
+        }
+        
+        function showNotification(message) {
+            // Criar elemento de notificação
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: var(--primary);
+                color: white;
+                padding: 12px 24px;
+                border-radius: var(--radius-small);
+                box-shadow: var(--shadow);
+                z-index: 2000;
+                font-weight: 600;
+                transition: all 0.3s;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(-50%) translateY(-20px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Preencher datas com valores padrão
+        window.onload = function() {
+            // Definir data de hoje como padrão nos formulários
+            const today = new Date();
+            const todayFormatted = today.toISOString().split('T')[0];
+            
+            document.getElementById('task-date').value = todayFormatted;
+            document.getElementById('task-date').min = todayFormatted;
+            
+            // Data padrão para estudos: 7 dias a partir de hoje
+            const nextWeek = new Date(today);
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            const nextWeekFormatted = nextWeek.toISOString().split('T')[0];
+            
+            document.getElementById('study-duedate').value = nextWeekFormatted;
+            document.getElementById('study-duedate').min = todayFormatted;
+            
+            // Hora padrão: próxima hora redonda
+            const nextHour = new Date();
+            nextHour.setHours(nextHour.getHours() + 1, 0, 0, 0);
+            const timeString = nextHour.toTimeString().substring(0, 5);
+            
+            document.getElementById('task-time').value = timeString;
+            document.getElementById('study-duetime').value = '23:59';
+        };
+        
+        // Simular funcionalidade de IA aprendendo com o uso
+        document.querySelectorAll('.task-card, .study-card, .medication-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Simular aprendizado da IA com interação do usuário
+                if (Math.random() > 0.7) { // 30% de chance de mostrar sugestão
+                    const aiSuggestion = document.querySelector('.ai-suggestion .ai-text');
+                    if (aiSuggestion) {
+                        const suggestions = [
+                            "Percebi que você interage mais com tarefas relacionadas a saúde. Quer que eu priorize esses lembretes?",
+                            "Você costuma completar tarefas no período da manhã. Posso sugerir agendamentos nesse horário?",
+                            "Notei que você adia tarefas de estudo. Que tal dividi-las em partes menores?",
+                            "Com base no seu histórico, você tem mais produtividade às quartas-feiras. Posso ajustar sua agenda?"
+                        ];
+                        
+                        const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+                        aiSuggestion.textContent = randomSuggestion;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```
